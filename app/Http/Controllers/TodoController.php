@@ -34,12 +34,19 @@ class TodoController extends Controller
      */
     public function store(Request $request, Goal $goal)
     {
+        // 新規作成
         $todo = new Todo();
+        // contentをpostされた内容に
         $todo->content = request('content');
+        // ユーザーIDはログインユーザー
         $todo->user_id = Auth::id();
+        // ゴールIDはpostされたID
         $todo->goal_id = $goal->id;
+        // positionはpostされたもの
         $todo->position = request('position');
-        $todo->done = false;
+        //????
+        $todo->done= false;
+        // 保存
         $todo->save();
 
         $todos = $goal->todos()->orderBy('done', 'asc')->orderBy('position', 'asc')->get();
@@ -76,6 +83,7 @@ class TodoController extends Controller
     public function destroy(Request $request, Goal $goal, Todo $todo)
     {
         $todo->delete();
+
         $todos = $goal->todos()->orderBy('done', 'asc')->orderBy('position', 'asc')->get();
         return response()->json($todos);
     }
@@ -83,14 +91,15 @@ class TodoController extends Controller
     // Todoを並び替えられるsortアクションを追加
     public function sort(Request $request, Goal $goal, Todo $todo)
     {
-        $exchangeTodo = Todo::where('position', request('sortId'))->first();
-        $lastTodo = Todo::where('position', request('sortId'))->lastest('position')->first;
-
-        if (request('sortId') == 0) {
+         $exchangeTodo = Todo::where('position',request('sortId'))->first();
+        
+        $lastTodo = Todo::where('position',request('sortId'))->latest('position')->first();
+        
+        if(request('sortId') == 0){
             $todo->moveBefore($exchangeTodo);
-        } else if (request('sortId') - 1 == $lastTodo->position) {
+        }else if (request('sortId') - 1 == $lastTodo->position){
             $todo->moveAfter($exchangeTodo);
-        } else {
+        }else {
             $todo->moveAfter($exchangeTodo);
         }
 
