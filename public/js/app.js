@@ -38348,7 +38348,7 @@ var render = function () {
         {
           staticClass: "modal fade",
           attrs: {
-            id: "todoModal" + _vm.goalModal,
+            id: "todoModal" + _vm.goalId,
             tabindex: "-1",
             role: "dialog",
             "aria-labelledby": "exampleModalLabel",
