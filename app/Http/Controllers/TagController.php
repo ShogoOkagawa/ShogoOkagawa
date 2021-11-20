@@ -65,7 +65,7 @@ class TagController extends Controller
         return response()->json($tags);
     }
 
-    /**
+   /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Tag  $tag
@@ -74,10 +74,11 @@ class TagController extends Controller
     public function destroy(Request $request, Tag $tag)
     {
         $tag->delete();
-
+        
         $user = Auth::user();
-
+        
         $tags = $user->tags;
+        
         return response()->json($tags);
     }
 }

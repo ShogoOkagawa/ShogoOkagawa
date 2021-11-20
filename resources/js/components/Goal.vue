@@ -197,53 +197,27 @@
       </div>
     </div>
 
-    <div class="card-group h-100">
-      <div v-for="(goal, key, index) in goals" :key="index">
-        <div class="card h-100 m-3" style="width: 24rem">
-          <div class="d-flex justify-content-between">
-            <h3 class="ml-5 mt-2">{{ goal.title }}</h3>
-            <div>
-              <i
-                class="fa fa-plus p-2"
-                data-toggle="modal"
-                :data-target="'#todoModal' + goal.id"
-              ></i>
-              <div class="btn-group dropdown">
-                <i
-                  class="fa fa-ellipsis-v p-2 dropdown-toggle"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                ></i>
-                <div class="dropdown-menu dropdown-menu-right">
-                  <div
-                    class="text-center"
-                    data-toggle="modal"
-                    data-target="#editGoalModal"
-                    v-on:click="
-                      title = goal.title;
-                      id = goal.id;
-                    "
-                  >
-                    Edit
-                  </div>
-                  <div
-                    class="text-danger text-center"
-                    data-toggle="modal"
-                    data-target="#deleteGoalModal"
-                    v-on:click="id = goal.id"
-                  >
-                    Delete
-                  </div>
+     <div class="card-group h-100">
+            <div v-for="(goal, key, index) in goals" :key=index>
+                <div class="card h-100 m-3" style="width: 24rem;">
+                    <div class="d-flex justify-content-between">
+                        <h3 class="ml-5 mt-2">{{ goal.title }}</h3>
+                        <div>
+                            <i class="fa fa-plus p-2" data-toggle="modal" :data-target="'#todoModal'+goal.id"></i>
+                            <div class="btn-group dropdown">
+                                <i class="fa fa-ellipsis-v p-2 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <div class="text-center" data-toggle="modal" data-target="#editGoalModal" v-on:click="title = goal.title; id = goal.id">Edit</div>
+                                        <div class="text-danger text-center" data-toggle="modal" data-target="#deleteGoalModal" v-on:click="id = goal.id">Delete</div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <goals-todos :goalId="goal.id"></goals-todos>
                 </div>
-              </div>
             </div>
-          </div>
-          <goals-todos :goalId="goal.id"></goals-todos>
         </div>
-      </div>
-    </div>
-  </div>
+    </div>    
 </template>
 
 <script>
@@ -358,6 +332,7 @@ export default {
     deleteTag: function (id) {
         axios.defaults.headers['X-CSRF-TOKEN'] = $('meta[name=csrf-token]').attr('content');
         axios.defaults.headers['content-type'] = 'application/json';
+        
         axios.post(`/tags/${id}`, {_method: 'delete'}).then((response) => {
             this.tags = response.data;
         }, (error) => {
